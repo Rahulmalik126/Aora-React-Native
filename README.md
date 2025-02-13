@@ -76,7 +76,7 @@ npx expo start
 ##### (available on iOS and Android) or use an emulator/simulator for testing.
 
 #### For Android:
-#### npx react-native run-android
+##### npx react-native run-android
 
 #### For iOS (if on macOS):
 ##### npx react-native run-ios
