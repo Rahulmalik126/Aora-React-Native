@@ -13,7 +13,7 @@ import { EmptyState, InfoBox, VideoCard } from "../../components";
 //Profile Component Tab
 const Profile = () => {
   const { user, setUser, setIsLogged,playingVideo,setPlayingVideo } = useGlobalContext();
-  const { data: posts } = useAppWrite(() => getUserPosts(user.$id));
+  const { data: posts ,refetch} = useAppWrite(() => getUserPosts(user.$id));
   //Function to Sign Out for the app
   const logout = async () => {
     await signOut();
@@ -24,11 +24,10 @@ const Profile = () => {
 
   useFocusEffect(
     useCallback(() => {
-      // Reset the playing video when leaving the screen
       return () => {
         setPlayingVideo(null); // Stop the video when navigating away
       };
-    }, [setPlayingVideo])
+    }, [])
   );
 
   return (

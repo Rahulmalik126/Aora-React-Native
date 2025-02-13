@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
 import { Video } from "expo-av";
 import * as ScreenOrientation from "expo-screen-orientation";
@@ -11,10 +11,13 @@ import { useGlobalContext } from "../context/GlobalProvider";
 // VideoCard Component to show the required videos
 const VideoCard = ({ title, creator, avatar, thumbnail, video, playingVideo, setPlayingVideo }) => {
   const {user, setUser}=useGlobalContext();
-  const [isSaved, setIsSaved] = useState(
-    getVideoSavedStatus(user?.savedVideos, video?.$id)
-  );
+  const [isSaved, setIsSaved] = useState();
   const [isToggling, setIsToggling] = useState(false);
+
+  useEffect(() => {
+    setIsSaved(getVideoSavedStatus(user?.savedVideos, video?.$id));
+  }, [user]);
+
 
   const handleToggleSaveVideo = async () => {
     setIsToggling(true);

@@ -12,23 +12,24 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 // home component tab
 const Home = () => {
   const { user , playingVideo, setPlayingVideo} = useGlobalContext();
-  const { data: posts, refetch } = useAppWrite(getAllPosts);
-  const { data: latestPosts } = useAppWrite(getLatestPosts);
+  const { data: latestPosts,refetch:refetchLatestPosts } = useAppWrite(getLatestPosts);
+  const { data: posts, refetch:refetchPosts } = useAppWrite(() => getAllPosts());
+
   const [refreshing, setRefreshing] = useState(false);
   // function to refresh the explore page
   const onRefresh = async () => {
     setRefreshing(true);
-    await refetch();
+    await Promise.all([refetchPosts(), refetchLatestPosts()]);
     setRefreshing(false);
   };
 
+
   useFocusEffect(
     useCallback(() => {
-      // Reset the playing video when leaving the screen
       return () => {
         setPlayingVideo(null); // Stop the video when navigating away
       };
-    }, [setPlayingVideo])
+    }, [])
   );
   return (
     <SafeAreaView className="bg-primary">

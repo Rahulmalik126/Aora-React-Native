@@ -1,5 +1,5 @@
 import { View, Text, FlatList, RefreshControl } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -20,16 +20,24 @@ const Bookmark = () => {
     setRefreshing(true);
     await refetch();
     setRefreshing(false);
-    setPlayingVideo(null);
   };
+
+  const reloadData = async () => {
+    await refetch();
+  };
+
+  // Refetch on saved video change
+  useEffect(() => {
+    reloadData();
+  }, [user]);
+
 
   useFocusEffect(
     useCallback(() => {
-      // Reset the playing video when leaving the screen
       return () => {
         setPlayingVideo(null); // Stop the video when navigating away
       };
-    }, [setPlayingVideo])
+    },[])
   );
 
   return (
