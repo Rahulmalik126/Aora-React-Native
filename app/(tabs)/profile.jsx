@@ -1,7 +1,8 @@
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Image, FlatList, TouchableOpacity } from "react-native";
-import { useState } from "react";
+import { useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 
 import { icons } from "../../constants";
 import useAppWrite from "../../lib/useAppWrite";
@@ -20,6 +21,15 @@ const Profile = () => {
     setIsLogged(false);
     router.replace("/sign-in");
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      // Reset the playing video when leaving the screen
+      return () => {
+        setPlayingVideo(null); // Stop the video when navigating away
+      };
+    }, [setPlayingVideo])
+  );
 
   return (
     <SafeAreaView className="bg-primary h-full">

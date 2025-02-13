@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList, Image, RefreshControl, Text, View } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 
 import { images } from "../../constants";
 import useAppWrite from "../../lib/useAppWrite";
@@ -21,6 +22,14 @@ const Home = () => {
     setRefreshing(false);
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      // Reset the playing video when leaving the screen
+      return () => {
+        setPlayingVideo(null); // Stop the video when navigating away
+      };
+    }, [setPlayingVideo])
+  );
   return (
     <SafeAreaView className="bg-primary">
       <FlatList

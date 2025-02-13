@@ -1,6 +1,7 @@
 import { View, Text, FlatList, RefreshControl } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
 
 import { useGlobalContext } from "../../context/GlobalProvider";
 import EmptyState from "../../components/EmptyState";
@@ -21,6 +22,15 @@ const Bookmark = () => {
     setRefreshing(false);
     setPlayingVideo(null);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      // Reset the playing video when leaving the screen
+      return () => {
+        setPlayingVideo(null); // Stop the video when navigating away
+      };
+    }, [setPlayingVideo])
+  );
 
   return (
     <SafeAreaView className="bg-primary h-full border-0">
