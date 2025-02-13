@@ -1,20 +1,19 @@
 import { useState } from "react";
 import { View, Text, TouchableOpacity, Image, Alert } from "react-native";
 import { Video } from "expo-av";
+import * as ScreenOrientation from "expo-screen-orientation";
 
 import { icons } from "../constants";
 import { getVideoSavedStatus } from "../lib/check";
 import { toggleSaveVideo } from "../lib/appWrite";
 import { useGlobalContext } from "../context/GlobalProvider";
 
-
 // VideoCard Component to show the required videos
 const VideoCard = ({ title, creator, avatar, thumbnail, video }) => {
   const [play, setPlay] = useState(false);
-  const {user, setUser } = useGlobalContext();
+  const { user, setUser } = useGlobalContext();
   const [isSaved, setIsSaved] = useState(
     getVideoSavedStatus(user?.savedVideos, video?.$id)
-    
   );
   const [isToggling, setIsToggling] = useState(false);
 
@@ -22,7 +21,7 @@ const VideoCard = ({ title, creator, avatar, thumbnail, video }) => {
     setIsToggling(true);
     try {
       const result = await toggleSaveVideo(user.$id, video);
-      setIsSaved(result); 
+      setIsSaved(result);
       if (result) {
         Alert.alert("Success", "The video added to your bookmark");
       } else {
@@ -55,6 +54,15 @@ const VideoCard = ({ title, creator, avatar, thumbnail, video }) => {
     setUser((prev) => ({ ...prev, savedVideos: newSavedVideos }));
   };
 
+  const handleFullScreen = (isFullScreen) => {
+    if (isFullScreen) {
+      ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+      );
+    } else {
+      ScreenOrientation.unlockAsync();
+    }
+  };
 
   return (
     <View className="flex flex-col items-center px-4 mb-14">
@@ -93,13 +101,23 @@ const VideoCard = ({ title, creator, avatar, thumbnail, video }) => {
         <View className="w-full h-60 rounded-[33px] mt-3 bg-white/10">
           <Video
             source={{ uri: video.video }}
-            style={{ width: "100%", height: "100%", borderRadius: "33px" }}
+            style={{ width: "100%", height: "100%", borderRadius: 33 }}
             resizeMode="cover"
             useNativeControls
             shouldPlay
             onPlaybackStatusUpdate={(status) => {
               if (status.didJustFinish) {
                 setPlay(false);
+              }
+            }}
+            onFullscreenUpdate={({ fullscreenUpdate }) => {
+              if (
+                fullscreenUpdate ===
+                ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+              ) {
+                handleFullScreen(true);
+              } else {
+                handleFullScreen(false);
               }
             }}
           />
@@ -122,20 +140,20 @@ const VideoCard = ({ title, creator, avatar, thumbnail, video }) => {
             resizeMode="contain"
           />
           <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={handleToggleSaveVideo}
-          className={`pt-2 ${isToggling ? "opacity-40" : ""}`}
-          disabled={isToggling}
-        >
-          <Image
-            source={icons.bookmark}
-            className="w-7 h-7 absolute"
-            style={{bottom:25 ,left:130}}
-            tintColor={`${isSaved ? "orange" : "white"}`}
-            resizeMode="contain"
-            pointerEvents="auto" 
-          />
-        </TouchableOpacity>
+            activeOpacity={0.7}
+            onPress={handleToggleSaveVideo}
+            className={`pt-2 ${isToggling ? "opacity-40" : ""}`}
+            disabled={isToggling}
+          >
+            <Image
+              source={icons.bookmark}
+              className="w-7 h-7 absolute"
+              style={{ bottom: 25, left: 130 }}
+              tintColor={`${isSaved ? "orange" : "white"}`}
+              resizeMode="contain"
+              pointerEvents="auto"
+            />
+          </TouchableOpacity>
         </TouchableOpacity>
       )}
     </View>
