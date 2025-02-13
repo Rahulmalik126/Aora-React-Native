@@ -9,9 +9,8 @@ import { toggleSaveVideo } from "../lib/appWrite";
 import { useGlobalContext } from "../context/GlobalProvider";
 
 // VideoCard Component to show the required videos
-const VideoCard = ({ title, creator, avatar, thumbnail, video }) => {
-  const [play, setPlay] = useState(false);
-  const { user, setUser } = useGlobalContext();
+const VideoCard = ({ title, creator, avatar, thumbnail, video, playingVideo, setPlayingVideo }) => {
+  const {user, setUser}=useGlobalContext();
   const [isSaved, setIsSaved] = useState(
     getVideoSavedStatus(user?.savedVideos, video?.$id)
   );
@@ -97,7 +96,7 @@ const VideoCard = ({ title, creator, avatar, thumbnail, video }) => {
         </View>
       </View>
 
-      {play ? (
+      {playingVideo === video ? ( // Check if this video is the current one being played
         <View className="w-full h-60 rounded-[33px] mt-3 bg-white/10">
           <Video
             source={{ uri: video.video }}
@@ -107,7 +106,7 @@ const VideoCard = ({ title, creator, avatar, thumbnail, video }) => {
             shouldPlay
             onPlaybackStatusUpdate={(status) => {
               if (status.didJustFinish) {
-                setPlay(false);
+                setPlayingVideo(null);  // Stop video after it finishes
               }
             }}
             onFullscreenUpdate={({ fullscreenUpdate }) => {
@@ -125,7 +124,7 @@ const VideoCard = ({ title, creator, avatar, thumbnail, video }) => {
       ) : (
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => setPlay(true)}
+          onPress={() => setPlayingVideo(video)}  // Set this video as the currently playing one
           className="w-full h-60 rounded-xl mt-3 relative flex justify-center items-center"
         >
           <Image

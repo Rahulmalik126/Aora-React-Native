@@ -12,14 +12,14 @@ import VideoCard from "../../components/VideoCard";
 const Bookmark = () => {
   const [refreshing, setRefreshing] = useState(false);
 
-  const { user } = useGlobalContext();
-
+  const { user, playingVideo, setPlayingVideo } = useGlobalContext();
   const { data: posts, refetch } = useAppWrite(() => getSavedPosts(user.$id));
 
   const onRefresh = async () => {
     setRefreshing(true);
     await refetch();
     setRefreshing(false);
+    setPlayingVideo(null);
   };
 
   return (
@@ -35,6 +35,8 @@ const Bookmark = () => {
             user={user}
             creator={item.creator.username}
             avatar={item.creator.avatar}
+            playingVideo={playingVideo}
+            setPlayingVideo={setPlayingVideo}
           />
         )}
         ListHeaderComponent={() => (

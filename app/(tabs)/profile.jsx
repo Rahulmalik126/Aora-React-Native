@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Image, FlatList, TouchableOpacity } from "react-native";
+import { useState } from "react";
 
 import { icons } from "../../constants";
 import useAppWrite from "../../lib/useAppWrite";
@@ -10,15 +11,13 @@ import { EmptyState, InfoBox, VideoCard } from "../../components";
 
 //Profile Component Tab
 const Profile = () => {
-  const { user, setUser, setIsLogged } = useGlobalContext();
+  const { user, setUser, setIsLogged,playingVideo,setPlayingVideo } = useGlobalContext();
   const { data: posts } = useAppWrite(() => getUserPosts(user.$id));
-
   //Function to Sign Out for the app
   const logout = async () => {
     await signOut();
     setUser(null);
     setIsLogged(false);
-
     router.replace("/sign-in");
   };
 
@@ -34,6 +33,8 @@ const Profile = () => {
             video={item}
             creator={item.creator.username}
             avatar={item.creator.avatar}
+            playingVideo={playingVideo}
+            setPlayingVideo={setPlayingVideo}
           />
         )}
         ListEmptyComponent={() => (

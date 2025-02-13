@@ -10,12 +10,10 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 
 // home component tab
 const Home = () => {
-  const { user } = useGlobalContext();
+  const { user , playingVideo, setPlayingVideo} = useGlobalContext();
   const { data: posts, refetch } = useAppWrite(getAllPosts);
   const { data: latestPosts } = useAppWrite(getLatestPosts);
-
   const [refreshing, setRefreshing] = useState(false);
-
   // function to refresh the explore page
   const onRefresh = async () => {
     setRefreshing(true);
@@ -35,6 +33,8 @@ const Home = () => {
             video={item}
             creator={item.creator.username}
             avatar={item.creator.avatar}
+            playingVideo={playingVideo} // Pass the current playing video
+            setPlayingVideo={setPlayingVideo} // Pass the setter to change the current playing video
           />
         )}
         ListHeaderComponent={() => (
@@ -42,7 +42,7 @@ const Home = () => {
             <View className="flex justify-between items-start flex-row mb-6">
               <View>
                 <Text className="font-pmedium text-sm text-gray-100">
-                  Welcome Back
+                  Welcome
                 </Text>
                 <Text className="text-2xl font-psemibold text-white">
                   {user?.username}
