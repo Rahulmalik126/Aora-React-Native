@@ -1,7 +1,7 @@
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Image, FlatList, TouchableOpacity } from "react-native";
-import { useCallback } from "react";
+import { View, Image, FlatList, TouchableOpacity, RefreshControl } from "react-native";
+import { useCallback, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 
 import { icons } from "../../constants";
@@ -14,6 +14,8 @@ import { EmptyState, InfoBox, VideoCard } from "../../components";
 const Profile = () => {
   const { user, setUser, setIsLogged,playingVideo,setPlayingVideo } = useGlobalContext();
   const { data: posts ,refetch} = useAppWrite(() => getUserPosts(user.$id));
+  const [refreshing, setRefreshing] = useState(false);
+
   //Function to Sign Out for the app
   const logout = async () => {
     await signOut();
@@ -22,6 +24,11 @@ const Profile = () => {
     router.replace("/sign-in");
   };
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
   useFocusEffect(
     useCallback(() => {
       return () => {
@@ -94,6 +101,9 @@ const Profile = () => {
             </View>
           </View>
         )}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
     </SafeAreaView>
   );
