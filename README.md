@@ -14,13 +14,18 @@ Aora is a mobile application built with React Native that allows users to sign i
 ## Screenshots
 
 ### 1. Sign In / Sign Up
+<p float="left">
 <img src="./screenshots/SignIn.jpg" width="300"/>
 <img src="./screenshots/SignUp.jpg" width="300"/>
+</p>
 
 ### 2. Home Tab with Search
-<img src="./screenshots/Home.jpg" width="300"/>
-<img src="./screenshots/Explore.jpg" width="300"/>
-<img src="./screenshots/Search.jpg" width="300"/>
+<p float="left">
+  <img src="./screenshots/Home.jpg" width="300" />
+  <img src="./screenshots/Explore.jpg" width="300" />
+  <img src="./screenshots/Search.jpg" width="300" />
+</p>
+
 
 ### 3. Create Post Tab
 <img src="./screenshots/CreatePost.jpg" width="300"/>
