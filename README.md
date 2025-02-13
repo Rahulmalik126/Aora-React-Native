@@ -73,10 +73,10 @@ npx expo start
 ```
 
 ### Step 4: Once the server is running, open the app in the Expo Go app on your mobile device
-#### (available on iOS and Android) or use an emulator/simulator for testing.
+##### (available on iOS and Android) or use an emulator/simulator for testing.
 
 #### For Android:
 #### npx react-native run-android
 
 #### For iOS (if on macOS):
-#### npx react-native run-ios
+##### npx react-native run-ios
