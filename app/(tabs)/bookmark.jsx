@@ -22,13 +22,13 @@ const Bookmark = () => {
     setRefreshing(false);
   };
 
-  const reloadData = async () => {
+  const reloadOnUpdate = async () => {
     await refetch();
   };
 
   // Refetch on saved video change
   useEffect(() => {
-    reloadData();
+    reloadOnUpdate();
   }, [user]);
 
 

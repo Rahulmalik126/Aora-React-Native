@@ -52,7 +52,7 @@ Ensure you have the following installed:
 
 ### Step 1: Clone the repository to your local machine
 ```bash
-git clone https://gitlab.com/arvindkumar31.1/video-sharing-app.git
+git clone https://gitlab.com/rahul-malik1/aora-react-native.git
 ```
 
 #### Navigate into the project directory
